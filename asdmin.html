@@ -329,24 +329,24 @@ async function create() {
         email: email.value,
         from: from.value,
         to: to.value,
-        estimated: estimated.value
+        sentDate: sentDate.value,
+        expectedDelivery: expectedDelivery.value
       })
     });
 
     const data = await res.json();
 
     if (data.tracking) {
-  alert("✅ Tracking Created: " + data.tracking);
-  loadShipments(); // 🔥 ADD THIS LINE
-} else {
-  alert("❌ Error creating shipment");
-}
+      alert("✅ Tracking Created: " + data.tracking);
+      loadShipments();
+    } else {
+      alert("❌ Error creating shipment");
+    }
 
   } catch (err) {
     alert("Server error");
   }
 }
-
 // 🔄 UPDATE
 async function update() {
   const tracking = document.getElementById("track").value;
