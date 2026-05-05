@@ -219,13 +219,20 @@ table tr:hover {
 
     <!-- CREATE -->
     <div class="card">
-      <h2>Create Shipment</h2>
-      <input id="email" placeholder="Customer Email">
-      <input id="from" placeholder="From">
-      <input id="to" placeholder="To">
-      <input id="estimated" placeholder="Estimated Delivery">
-      <button onclick="create()">Create Shipment</button>
-    </div>
+  <h2>Create Shipment</h2>
+
+  <input id="email" placeholder="Customer Email">
+  <input id="from" placeholder="From">
+  <input id="to" placeholder="To">
+
+  <!-- NEW: Sent Date -->
+  <input id="sentDate" type="date" placeholder="Sent Date">
+
+  <!-- NEW: Expected Delivery -->
+  <input id="expectedDelivery" type="date" placeholder="Expected Delivery">
+
+  <button onclick="create()">Create Shipment</button>
+</div>
 
     <!-- UPDATE -->
     <div class="card">
