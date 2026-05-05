@@ -6,6 +6,21 @@
 <title>Admin Dashboard</title>
 
 <style>
+
+  .edit-btn {
+  background: #0070f3;
+  border: none;
+  padding: 6px 12px;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 13px;
+  margin-left: 5px;
+}
+
+.edit-btn:hover {
+  background: #0059c9;
+}
 * {
   box-sizing: border-box;
   font-family: 'Inter', Arial, sans-serif;
@@ -394,10 +409,14 @@ async function loadShipments() {
       <td>${item.location}</td>
       <td>${item.estimated}</td>
       <td>
-        <button class="delete-btn" onclick="deleteShipment('${item.tracking}')">
-          Delete
-        </button>
-      </td>
+  <button class="delete-btn" onclick="deleteShipment('${item.tracking}')">
+    Delete
+  </button>
+
+  <button class="edit-btn" onclick='editShipment(${JSON.stringify(item)})'>
+    Edit
+  </button>
+</td>
     </tr>
   `;
 });
@@ -434,5 +453,14 @@ async function loadShipments() {
   }
 }
 </script>
+  <script>
+    function editShipment(item) {
+  document.getElementById("track").value = item.tracking;
+  document.getElementById("status").value = item.status;
+  document.getElementById("location").value = item.location;
+
+  alert("✏️ Editing shipment: " + item.tracking);
+}
+  </script>
 </body>
 </html>
