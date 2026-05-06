@@ -461,14 +461,19 @@ async function loadShipments() {
 <tr>
   <td>${item.tracking}</td>
   <td>${item.email}</td>
+
+  <td>${item.sender_name || '-'}</td>
+  <td>${item.receiver_name || '-'}</td>
+
   <td>${item.sender}</td>
   <td>${item.receiver}</td>
+
   <td>${item.status}</td>
   <td>${item.location}</td>
 
-  <!-- NEW -->
-<td>${formatDate(item.sent_date)}</td>
-<td>${formatDate(item.expected_delivery)}</td>
+  <td>${formatDate(item.sent_date)}</td>
+  <td>${formatDate(item.expected_delivery)}</td>
+
   <td>
     <button class="delete-btn" onclick="deleteShipment('${item.tracking}')">
       Delete
@@ -479,7 +484,7 @@ async function loadShipments() {
     </button>
   </td>
 </tr>
-  `;
+`;
 });
 
   } catch (err) {
