@@ -1,297 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Track Your Package | CargEx</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Your Package | CargEx</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/styles.css">
 
-<!-- LOADER -->
-<div id="loader" style="
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(255,255,255,0.7);
-backdrop-filter: blur(3px);
-z-index:9999;
-align-items:center;
-justify-content:center;
-">
-<div style="
-width:50px;
-height:50px;
-border:5px solid #ddd;
-border-top:5px solid #4D148C;
-border-radius:50%;
-animation:spin 1s linear infinite;
-"></div>
-</div>
+  <!-- LOADER -->
+  <div id="loader" style="
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(255,255,255,0.7);
+    backdrop-filter: blur(3px);
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+  ">
+    <div style="
+      width:50px;
+      height:50px;
+      border:5px solid #ddd;
+      border-top:5px solid #4D148C;
+      border-radius:50%;
+      animation:spin 1s linear infinite;
+    "></div>
+  </div>
 
-<style>
-@keyframes spin {
-0% { transform: rotate(0deg); }
-100% { transform: rotate(360deg); }
-}
-</style>
-<!-- Smartsupp Live Chat script -->
-<script type="text/javascript">
-var _smartsupp = _smartsupp || {};
-_smartsupp.key = '3ca1d7cc2397fbb6b801334f2cdfad28af763ad4';
-window.smartsupp||(function(d) {
-var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
-s=d.getElementsByTagName('script')[0];c=d.createElement('script');
-c.type='text/javascript';c.charset='utf-8';c.async=true;
-c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
-})(document);
-</script>
-<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
-
+  <style>
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 
 <body>
 
 <!-- HEADER -->
 <div class="utility-bar">
-<div class="container utility-bar-inner">
-<div class="utility-links">
-<a href="#">CargEx Mobile</a>
-<a href="#">Get Notifications</a>
-</div>
-<div class="utility-right">
-<a href="#">English</a>
-<a href="/login.html">Sign Up or Log In</a>
-</div>
-</div>
+  <div class="container utility-bar-inner">
+    <div class="utility-links">
+      <a href="#">CargEx Mobile</a>
+      <a href="#">Get Notifications</a>
+    </div>
+    <div class="utility-right">
+      <a href="#">English</a>
+      <a href="/login.html">Sign Up or Log In</a>
+    </div>
+  </div>
 </div>
 
 <div class="page-header" style="background:#0070F3">
-<div class="container">
-<h1>Track Your Shipment</h1>
-<p>Enter your tracking number to get real-time status updates</p>
-</div>
+  <div class="container">
+    <h1>Track Your Shipment</h1>
+    <p>Enter your tracking number to get real-time status updates</p>
+  </div>
 </div>
 
 <!-- CONTENT -->
 <div class="page-content">
-<div class="container">
+  <div class="container">
 
-<!-- INPUT -->
-<div class="tracking-box">
-<div class="tracking-form">
-<label>TRACKING NUMBER</label>
-<div class="tracking-input-group">
-<input type="text" id="track-input" placeholder="Enter tracking number">
-<button class="btn-primary" onclick="showTrackingResult()">TRACK</button>
-</div>
-</div>
-</div>
+    <!-- INPUT -->
+    <div class="tracking-box">
+      <div class="tracking-form">
+        <label>TRACKING NUMBER</label>
+        <div class="tracking-input-group">
+          <input type="text" id="track-input" placeholder="Enter tracking number">
+          <button class="btn-primary" onclick="showTrackingResult()">TRACK</button>
+        </div>
+      </div>
+    </div>
 
-<!-- RESULT -->
-<div class="tracking-result" id="tracking-result" style="display:none;">
+    <!-- RESULT -->
+    <div class="tracking-result" id="tracking-result" style="display:none;">
 
-<!-- TOP -->
-<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-<div>
-<h3 id="trackingNumber" style="font-size:20px;color:#4D148C;">Tracking Number:</h3>
-<p id="trackingInfo" style="font-size:14px;color:#666;"></p>
-</div>
+      <!-- TOP -->
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+        <div>
+          <h3 id="trackingNumber" style="font-size:20px;color:#4D148C;">Tracking Number:</h3>
+          <p id="trackingInfo" style="font-size:14px;color:#666;"></p>
+        </div>
 
-<div>
-<span id="statusBadge" style="background:#FF6600;color:#fff;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:700;"> Your shipment is moving through the network” </span>
-</div>
-</div>
+        <div>
+          <span id="statusBadge" style="color:#fff;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:700;"></span>
+        </div>
+      </div>
 
-<!-- 🚨 CUSTOMS ALERT (FEDEX STYLE) -->
-<div id="customNotice" style="
-display:none;
-margin-top:18px;
-padding:14px 16px;
-border-left:6px solid #d93025;
-background:#fff5f5;
-border-radius:8px;
-box-shadow:0 2px 8px rgba(0,0,0,0.06);
-">
-<div style="display:flex;align-items:center;gap:10px;">
-<div style="width:12px;height:12px;background:#d93025;border-radius:50%;"></div>
-<strong style="color:#b00020;font-size:14px;">Customs Clearance Hold</strong>
-</div>
+      <!-- CUSTOMS ALERT -->
+      <div id="customNotice" style="
+        display:none;
+        margin-top:18px;
+        padding:14px 16px;
+        border-left:6px solid #d93025;
+        background:#fff5f5;
+        border-radius:8px;
+      ">
+        <strong style="color:#b00020;">Customs Clearance Hold</strong>
+        <p style="margin:6px 0 0;color:#5f2120;font-size:13px;">
+          Your shipment is being held at customs. Please contact support immediately.
+        </p>
+      </div>
 
-<p style="margin:8px 0 0;color:#5f2120;font-size:13px;line-height:1.4;">
-Your shipment is currently being held at customs for clearance verification.
-Please contact customer service immediately to avoid delays.
-</p>
+      <!-- DETAILS -->
+      <div style="background:#fff;border-radius:8px;padding:20px;margin-top:20px;">
 
-<div style="margin-top:10px;">
-<a href="https://widget-page.smartsupp.com/widget/3ca1d7cc2397fbb6b801334f2cdfad28af763ad4" style="
-display:inline-block;
-background:#d93025;
-color:#fff;
-padding:6px 12px;
-border-radius:5px;
-font-size:12px;
-text-decoration:none;
-font-weight:600;
-">
-Contact Support
-</a>
-</div>
-</div>
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:12px;color:#888;">FROM</div>
+            <div id="fromLocation" style="font-weight:600;">-</div>
+          </div>
 
-<!-- DETAILS -->
-<div style="background:#fff;border-radius:8px;padding:20px;margin-top:20px;">
+          <div style="text-align:right;">
+            <div style="font-size:12px;color:#888;">TO</div>
+            <div id="toLocation" style="font-weight:600;">-</div>
+          </div>
+        </div>
 
-<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-<div>
-<div style="font-size:12px;color:#888;">FROM</div>
-<div id="fromLocation" style="font-weight:600;">-</div>
-</div>
+        <div style="display:flex;justify-content:space-between;margin-top:20px;">
+          <div>
+            <div style="font-size:12px;color:#888;">Sent Date</div>
+            <div id="sentDate" style="font-weight:600;">-</div>
+          </div>
 
-<div style="text-align:right;">
-<div style="font-size:12px;color:#888;">TO</div>
-<div id="toLocation" style="font-weight:600;">-</div>
-</div>
-</div>
+          <div style="text-align:right;">
+            <div style="font-size:12px;color:#888;">Expected Delivery</div>
+            <div id="expectedDelivery" style="font-weight:600;">-</div>
+          </div>
+        </div>
 
-<div style="display:flex;justify-content:space-between;margin-top:20px;">
-<div>
-<div style="font-size:12px;color:#888;">Sent Date</div>
-<div id="sentDate" style="font-weight:600;">-</div>
+      </div>
+
+      <!-- TIMELINE -->
+      <div class="tracking-timeline" style="margin-top:20px;">
+        <h3>Shipment Progress</h3>
+      </div>
+
+    </div>
+  </div>
 </div>
 
-<div style="text-align:right;">
-<div style="font-size:12px;color:#888;">Expected Delivery</div>
-<div id="expectedDelivery" style="font-weight:600;">-</div>
-</div>
-</div>
-
-</div>
-
-<!-- TIMELINE -->
-<div class="tracking-timeline" style="margin-top:20px;">
-<h3>Shipment Progress</h3>
-</div>
-
-</div>
-</div>
-</div>
-<br>
-<br>
-<br>
 <!-- FOOTER -->
 <footer class="main-footer">
-<div class="container">
-<div class="footer-bottom">
-<div class="footer-bottom-links">
-<a href="terms.html">Terms</a>
-<a href="privacy.html">Privacy</a>
-</div>
-<p>&copy; CargEx 1995-2026</p>
-</div>
-</div>
+  <div class="container">
+    <p>&copy; CargEx 1995-2026</p>
+  </div>
 </footer>
 
-<!-- SCRIPT -->
+<!-- STATUS ENGINE (FIXED & ROBUST) -->
 <script>
-function formatDate(dateStr) {
-if (!dateStr) return "-";
-const d = new Date(dateStr);
-return d.toLocaleDateString("en-US", {
-month: "short",
-day: "numeric",
-year: "numeric"
-});
+const STATUS_CONFIG = {
+  "shipment created": { color:"#6c757d", message:"Shipment created and awaiting processing." },
+  "processing": { color:"#0070F3", message:"Shipment is being processed." },
+  "in transit": { color:"#FF6600", message:"Your package is on the way." },
+  "out for delivery": { color:"#28a745", message:"Courier is delivering your package today." },
+  "delivered": { color:"#198754", message:"Package delivered successfully." },
+  "custom": { color:"#d93025", message:"Held at customs." }
+};
+
+// ---------- NORMALIZER ----------
+function normalizeStatus(str) {
+  return (str || "")
+    .toLowerCase()
+    .replace(/[_-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
-function showLoader() {
-document.getElementById("loader").style.display = "flex";
+// ---------- DETECTOR ----------
+function detectStatusKey(status) {
+  const s = normalizeStatus(status);
+
+  if (s.includes("shipment") && s.includes("created")) return "shipment created";
+  if (s.includes("process")) return "processing";
+  if (s.includes("transit")) return "in transit";
+  if (s.includes("out") && s.includes("delivery")) return "out for delivery";
+  if (s.includes("deliver")) return "delivered";
+  if (s.includes("custom")) return "custom";
+
+  return "unknown";
 }
 
-function hideLoader() {
-document.getElementById("loader").style.display = "none";
+// ---------- FORMAT DATE ----------
+function formatDate(dateStr){
+  if(!dateStr) return "-";
+  const d = new Date(dateStr);
+  return d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
 }
 
-async function showTrackingResult() {
-const tracking = document.getElementById("track-input").value;
+// ---------- LOADER ----------
+function showLoader(){document.getElementById("loader").style.display="flex";}
+function hideLoader(){document.getElementById("loader").style.display="none";}
 
-if (!tracking) {
-alert("Enter tracking number");
-return;
-}
+// ---------- MAIN ----------
+async function showTrackingResult(){
 
-showLoader();
+  const tracking = document.getElementById("track-input").value;
+  if(!tracking) return alert("Enter tracking number");
 
-try {
-const res = await fetch("https://xn--km-xqa.com/track.php?tracking=" + tracking);
-const data = await res.json();
+  showLoader();
 
-hideLoader();
+  try {
+    const res = await fetch("https://xn--km-xqa.com/track.php?tracking="+tracking);
+    const data = await res.json();
 
-if (data.error) {
-alert("Tracking not found");
-return;
-}
+    hideLoader();
 
-document.getElementById("tracking-result").style.display = "block";
+    if(data.error) return alert("Tracking not found");
 
-// TOP INFO
-document.getElementById("trackingNumber").innerText = "Tracking Number: " + data.tracking;
+    document.getElementById("tracking-result").style.display="block";
 
-document.getElementById("trackingInfo").innerHTML =
-"CargEx Express — Estimated Delivery: <strong>" +
-formatDate(data.expected_delivery) + "</strong>";
+    // STATUS ENGINE
+    const key = detectStatusKey(data.status);
+    const status = STATUS_CONFIG[key] || {
+      color:"#FF6600",
+      message:data.status || "Unknown status"
+    };
 
-// STATUS
-const status = (data.status || "").toLowerCase();
-document.getElementById("statusBadge").innerText = data.status;
+    // BADGE
+    const badge = document.getElementById("statusBadge");
+    badge.innerText = data.status;
+    badge.style.background = status.color;
 
-// CUSTOMS DETECTION (ROBUST)
-if (
-status.includes("custom") ||
-status.includes("clearance") ||
-status.includes("held")
-) {
-document.getElementById("customNotice").style.display = "block";
-} else {
-document.getElementById("customNotice").style.display = "none";
-}
+    // INFO
+    document.getElementById("trackingInfo").innerHTML =
+      status.message + " — Estimated Delivery: <strong>" +
+      formatDate(data.expected_delivery) + "</strong>";
 
-// LOCATIONS
-document.getElementById("fromLocation").innerText = data.sender;
-document.getElementById("toLocation").innerText = data.receiver;
+    // CUSTOM ALERT
+    document.getElementById("customNotice").style.display =
+      key === "custom" ? "block" : "none";
 
-// DATES
-document.getElementById("sentDate").innerText = formatDate(data.sent_date);
-document.getElementById("expectedDelivery").innerText = formatDate(data.expected_delivery);
+    // BASIC INFO
+    document.getElementById("trackingNumber").innerText =
+      "Tracking Number: " + data.tracking;
 
-// TIMELINE
-let html = "";
-data.events.forEach((event, index) => {
-html += `
-<div class="timeline-item ${index === 0 ? 'current' : ''}">
-<div class="timeline-date">${event.date}</div>
-<div>
-<strong>${event.title}</strong><br>
-<span>${event.location}</span>
-</div>
-</div>
-`;
-});
+    document.getElementById("fromLocation").innerText = data.sender;
+    document.getElementById("toLocation").innerText = data.receiver;
+    document.getElementById("sentDate").innerText = formatDate(data.sent_date);
+    document.getElementById("expectedDelivery").innerText = formatDate(data.expected_delivery);
 
-document.querySelector(".tracking-timeline").innerHTML =
-"<h3>Shipment Progress</h3>" + html;
+    // TIMELINE
+    let html = "";
+    data.events.forEach((e,i)=>{
+      html += `
+        <div class="timeline-item ${i===0?'current':''}">
+          <div>${e.date}</div>
+          <strong>${e.title}</strong><br>
+          <span>${e.location}</span>
+        </div>`;
+    });
 
-} catch (err) {
-hideLoader();
-console.error(err);
-alert("Server error. Try again.");
-}
+    document.querySelector(".tracking-timeline").innerHTML =
+      "<h3>Shipment Progress</h3>"+html;
+
+  } catch(err){
+    hideLoader();
+    console.error(err);
+    alert("Server error");
+  }
 }
 </script>
 
