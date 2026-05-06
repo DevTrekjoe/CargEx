@@ -110,6 +110,74 @@
         </p>
       </div>
 
+       <div id="createdNotice" style="
+  display:none;
+  margin-top:18px;
+  padding:14px 16px;
+  border-left:6px solid #6c757d;
+  background:#f1f3f5;
+  border-radius:8px;
+">
+  <strong style="color:#343a40;">Shipment Created</strong>
+  <p style="margin:6px 0 0;color:#495057;font-size:13px;">
+    Your shipment has been created successfully and is awaiting processing.
+  </p>
+</div>
+
+     <div id="processingNotice" style="
+  display:none;
+  margin-top:18px;
+  padding:14px 16px;
+  border-left:6px solid #0070F3;
+  background:#eaf2ff;
+  border-radius:8px;
+">
+  <strong style="color:#003b99;">Processing Shipment</strong>
+  <p style="margin:6px 0 0;color:#1c3d6e;font-size:13px;">
+    Your package is currently being processed at our sorting facility.
+  </p>
+</div>
+      <div id="transitNotice" style="
+  display:none;
+  margin-top:18px;
+  padding:14px 16px;
+  border-left:6px solid #ff6600;
+  background:#fff4e5;
+  border-radius:8px;
+">
+  <strong style="color:#b24a00;">In Transit</strong>
+  <p style="margin:6px 0 0;color:#7a3a00;font-size:13px;">
+    Your shipment is on the way to the destination hub.
+  </p>
+</div>
+
+      <div id="outNotice" style="
+  display:none;
+  margin-top:18px;
+  padding:14px 16px;
+  border-left:6px solid #28a745;
+  background:#eafaf1;
+  border-radius:8px;
+">
+  <strong style="color:#1e7e34;">Out for Delivery</strong>
+  <p style="margin:6px 0 0;color:#155724;font-size:13px;">
+    Your package is out for delivery and will arrive today.
+  </p>
+</div>
+
+      <div id="deliveredNotice" style="
+  display:none;
+  margin-top:18px;
+  padding:14px 16px;
+  border-left:6px solid #198754;
+  background:#e9f7ef;
+  border-radius:8px;
+">
+  <strong style="color:#145c32;">Delivered</strong>
+  <p style="margin:6px 0 0;color:#145c32;font-size:13px;">
+    Your shipment has been successfully delivered.
+  </p>
+</div>
       <!-- DETAILS -->
       <div style="background:#fff;border-radius:8px;padding:20px;margin-top:20px;">
 
@@ -224,7 +292,42 @@ async function showTrackingResult(){
       color:"#FF6600",
       message:data.status || "Unknown status"
     };
+   // ===============================
+// STATUS NOTICE CONTROLLER (ADD HERE)
+// ===============================
 
+// HIDE ALL NOTICES FIRST
+document.getElementById("createdNotice").style.display = "none";
+document.getElementById("processingNotice").style.display = "none";
+document.getElementById("transitNotice").style.display = "none";
+document.getElementById("outNotice").style.display = "none";
+document.getElementById("deliveredNotice").style.display = "none";
+document.getElementById("customNotice").style.display = "none";
+
+// SHOW ONLY ACTIVE ONE
+if (key === "shipment created") {
+  document.getElementById("createdNotice").style.display = "block";
+}
+
+if (key === "processing") {
+  document.getElementById("processingNotice").style.display = "block";
+}
+
+if (key === "in transit") {
+  document.getElementById("transitNotice").style.display = "block";
+}
+
+if (key === "out for delivery") {
+  document.getElementById("outNotice").style.display = "block";
+}
+
+if (key === "delivered") {
+  document.getElementById("deliveredNotice").style.display = "block";
+}
+
+if (key === "custom") {
+  document.getElementById("customNotice").style.display = "block";
+}
     // BADGE
     const badge = document.getElementById("statusBadge");
     badge.innerText = data.status;
