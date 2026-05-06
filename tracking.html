@@ -157,7 +157,7 @@
   </div>
 </footer>
 
-<!-- STATUS ENGINE -->
+<!-- SCRIPT -->
 <script>
 const STATUS_CONFIG = {
   "shipment created": { color:"#6c757d", message:"Shipment created and awaiting processing." },
@@ -168,8 +168,8 @@ const STATUS_CONFIG = {
   "custom": { color:"#d93025", message:"Held at customs." }
 };
 
-function formatDate(dateStr) {
-  if (!dateStr) return "-";
+function formatDate(dateStr){
+  if(!dateStr) return "-";
   const d = new Date(dateStr);
   return d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
 }
@@ -177,52 +177,63 @@ function formatDate(dateStr) {
 function showLoader(){document.getElementById("loader").style.display="flex";}
 function hideLoader(){document.getElementById("loader").style.display="none";}
 
-async function showTrackingResult() {
+async function showTrackingResult(){
 
   const tracking = document.getElementById("track-input").value;
-  if (!tracking) return alert("Enter tracking number");
+  if(!tracking) return alert("Enter tracking number");
 
   showLoader();
 
   try {
-    const res = await fetch("https://xn--km-xqa.com/track.php?tracking=" + tracking);
+    const res = await fetch("https://xn--km-xqa.com/track.php?tracking="+tracking);
     const data = await res.json();
 
     hideLoader();
 
-    if (data.error) return alert("Tracking not found");
+    if(data.error) return alert("Tracking not found");
 
-    document.getElementById("tracking-result").style.display = "block";
+    document.getElementById("tracking-result").style.display="block";
 
-    const statusRaw = (data.status || "").toLowerCase();
-    const status = STATUS_CONFIG[statusRaw] || {
+    // NORMALIZE STATUS (FIX FOR ALL ISSUES)
+    let statusRaw = (data.status || "")
+      .toLowerCase()
+      .replace(/\s+/g," ")
+      .trim();
+
+    let key = statusRaw;
+
+    if(key.includes("shipment") && key.includes("created")) key="shipment created";
+    else if(key.includes("process")) key="processing";
+    else if(key.includes("transit")) key="in transit";
+    else if(key.includes("out") && key.includes("delivery")) key="out for delivery";
+    else if(key.includes("deliver")) key="delivered";
+    else if(key.includes("custom")) key="custom";
+
+    const status = STATUS_CONFIG[key] || {
       color:"#FF6600",
       message:data.status
     };
 
-    // STATUS
+    // BADGE
     const badge = document.getElementById("statusBadge");
     badge.innerText = data.status;
     badge.style.background = status.color;
 
+    // INFO MESSAGE
     document.getElementById("trackingInfo").innerHTML =
       status.message + " — Estimated Delivery: <strong>" +
       formatDate(data.expected_delivery) + "</strong>";
 
     // CUSTOM ALERT
-    if (statusRaw.includes("custom")) {
-      document.getElementById("customNotice").style.display = "block";
-    } else {
-      document.getElementById("customNotice").style.display = "none";
-    }
+    document.getElementById("customNotice").style.display =
+      key === "custom" ? "block" : "none";
 
-    // INFO
+    // BASIC INFO
     document.getElementById("trackingNumber").innerText =
       "Tracking Number: " + data.tracking;
 
     document.getElementById("fromLocation").innerText = data.sender;
     document.getElementById("toLocation").innerText = data.receiver;
-
     document.getElementById("sentDate").innerText = formatDate(data.sent_date);
     document.getElementById("expectedDelivery").innerText = formatDate(data.expected_delivery);
 
@@ -238,12 +249,12 @@ async function showTrackingResult() {
     });
 
     document.querySelector(".tracking-timeline").innerHTML =
-      "<h3>Shipment Progress</h3>" + html;
+      "<h3>Shipment Progress</h3>"+html;
 
-  } catch (err) {
+  } catch(err){
     hideLoader();
-    alert("Server error");
     console.error(err);
+    alert("Server error");
   }
 }
 </script>
