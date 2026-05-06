@@ -419,8 +419,8 @@ async function loadShipments() {
   <td>${item.location}</td>
 
   <!-- NEW -->
-<td>${item.sent_date || "-"}</td>
-<td>${item.expected_delivery || "-"}</td>
+<td>${formatDate(item.sent_date)}</td>
+<td>${formatDate(item.expected_delivery)}</td>
   <td>
     <button class="delete-btn" onclick="deleteShipment('${item.tracking}')">
       Delete
@@ -473,6 +473,19 @@ async function loadShipments() {
   document.getElementById("location").value = item.location;
 
   alert("✏️ Editing shipment: " + item.tracking);
+}
+  </script>
+  <script>
+    function formatDate(dateStr) {
+  if (!dateStr) return "-";
+
+  const date = new Date(dateStr);
+
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  });
 }
   </script>
 </body>
