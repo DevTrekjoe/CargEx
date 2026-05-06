@@ -158,7 +158,7 @@
 <!-- STATUS ENGINE (FIXED & ROBUST) -->
 <script>
 const STATUS_CONFIG = {
-  "Shipment created": { color:"#6c757d", message:"Shipment created and awaiting processing." },
+  "shipment created": { color:"#6c757d", message:"shipment created and awaiting processing." },
   "processing": { color:"#0070F3", message:"Shipment is being processed." },
   "in transit": { color:"#FF6600", message:"Your package is on the way." },
   "out for delivery": { color:"#28a745", message:"Courier is delivering your package today." },
@@ -179,7 +179,7 @@ function normalizeStatus(str) {
 function detectStatusKey(status) {
   const s = normalizeStatus(status);
 
-  if (s.includes("shipment") && s.includes("created")) return "Shipment created";
+  if (s.includes("shipment") && s.includes("created")) return "shipment created";
   if (s.includes("process")) return "processing";
   if (s.includes("transit")) return "in transit";
   if (s.includes("out") && s.includes("delivery")) return "out for delivery";
