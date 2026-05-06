@@ -40,19 +40,6 @@
       100% { transform: rotate(360deg); }
     }
   </style>
-  <!-- Smartsupp Live Chat script -->
-<script type="text/javascript">
-var _smartsupp = _smartsupp || {};
-_smartsupp.key = '3ca1d7cc2397fbb6b801334f2cdfad28af763ad4';
-window.smartsupp||(function(d) {
-  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
-  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
-  c.type='text/javascript';c.charset='utf-8';c.async=true;
-  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
-})(document);
-</script>
-<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
-
 </head>
 
 <body>
@@ -104,11 +91,11 @@ window.smartsupp||(function(d) {
         </div>
 
         <div>
-          <span id="statusBadge" style="background:#FF6600;color:#fff;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:700;"></span>
+          <span id="statusBadge" style="color:#fff;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:700;"></span>
         </div>
       </div>
 
-      <!-- 🚨 CUSTOMS ALERT (FEDEX STYLE) -->
+      <!-- CUSTOMS ALERT -->
       <div id="customNotice" style="
         display:none;
         margin-top:18px;
@@ -116,38 +103,17 @@ window.smartsupp||(function(d) {
         border-left:6px solid #d93025;
         background:#fff5f5;
         border-radius:8px;
-        box-shadow:0 2px 8px rgba(0,0,0,0.06);
       ">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:12px;height:12px;background:#d93025;border-radius:50%;"></div>
-          <strong style="color:#b00020;font-size:14px;">Customs Clearance Hold</strong>
-        </div>
-
-        <p style="margin:8px 0 0;color:#5f2120;font-size:13px;line-height:1.4;">
-          Your shipment is currently being held at customs for clearance verification.
-          Please contact customer service immediately to avoid delays.
+        <strong style="color:#b00020;">Customs Clearance Hold</strong>
+        <p style="margin:6px 0 0;color:#5f2120;font-size:13px;">
+          Your shipment is being held at customs. Please contact support immediately.
         </p>
-
-        <div style="margin-top:10px;">
-          <a href="https://widget-page.smartsupp.com/widget/3ca1d7cc2397fbb6b801334f2cdfad28af763ad4" style="
-            display:inline-block;
-            background:#d93025;
-            color:#fff;
-            padding:6px 12px;
-            border-radius:5px;
-            font-size:12px;
-            text-decoration:none;
-            font-weight:600;
-          ">
-            Contact Support
-          </a>
-        </div>
       </div>
 
       <!-- DETAILS -->
       <div style="background:#fff;border-radius:8px;padding:20px;margin-top:20px;">
 
-        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;">
           <div>
             <div style="font-size:12px;color:#888;">FROM</div>
             <div id="fromLocation" style="font-weight:600;">-</div>
@@ -181,49 +147,40 @@ window.smartsupp||(function(d) {
     </div>
   </div>
 </div>
-<br>
-  <br>
-  <br>
+
 <!-- FOOTER -->
 <footer class="main-footer">
   <div class="container">
     <div class="footer-bottom">
-      <div class="footer-bottom-links">
-        <a href="terms.html">Terms</a>
-        <a href="privacy.html">Privacy</a>
-      </div>
       <p>&copy; CargEx 1995-2026</p>
     </div>
   </div>
 </footer>
 
-<!-- SCRIPT -->
+<!-- STATUS ENGINE -->
 <script>
+const STATUS_CONFIG = {
+  "shipment created": { color:"#6c757d", message:"Shipment created and awaiting processing." },
+  "processing": { color:"#0070F3", message:"Shipment is being processed." },
+  "in transit": { color:"#FF6600", message:"Your package is on the way." },
+  "out for delivery": { color:"#28a745", message:"Courier is delivering your package today." },
+  "delivered": { color:"#198754", message:"Package delivered successfully." },
+  "custom": { color:"#d93025", message:"Held at customs." }
+};
+
 function formatDate(dateStr) {
   if (!dateStr) return "-";
   const d = new Date(dateStr);
-  return d.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric"
-  });
+  return d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
 }
 
-function showLoader() {
-  document.getElementById("loader").style.display = "flex";
-}
-
-function hideLoader() {
-  document.getElementById("loader").style.display = "none";
-}
+function showLoader(){document.getElementById("loader").style.display="flex";}
+function hideLoader(){document.getElementById("loader").style.display="none";}
 
 async function showTrackingResult() {
-  const tracking = document.getElementById("track-input").value;
 
-  if (!tracking) {
-    alert("Enter tracking number");
-    return;
-  }
+  const tracking = document.getElementById("track-input").value;
+  if (!tracking) return alert("Enter tracking number");
 
   showLoader();
 
@@ -233,55 +190,51 @@ async function showTrackingResult() {
 
     hideLoader();
 
-    if (data.error) {
-      alert("Tracking not found");
-      return;
-    }
+    if (data.error) return alert("Tracking not found");
 
     document.getElementById("tracking-result").style.display = "block";
 
-    // TOP INFO
-    document.getElementById("trackingNumber").innerText = "Tracking Number: " + data.tracking;
-
-    document.getElementById("trackingInfo").innerHTML =
-      "CargEx Express — Estimated Delivery: <strong>" +
-      formatDate(data.expected_delivery) + "</strong>";
+    const statusRaw = (data.status || "").toLowerCase();
+    const status = STATUS_CONFIG[statusRaw] || {
+      color:"#FF6600",
+      message:data.status
+    };
 
     // STATUS
-    const status = (data.status || "").toLowerCase();
-    document.getElementById("statusBadge").innerText = data.status;
+    const badge = document.getElementById("statusBadge");
+    badge.innerText = data.status;
+    badge.style.background = status.color;
 
-    // CUSTOMS DETECTION (ROBUST)
-    if (
-      status.includes("custom") ||
-      status.includes("clearance") ||
-      status.includes("held")
-    ) {
+    document.getElementById("trackingInfo").innerHTML =
+      status.message + " — Estimated Delivery: <strong>" +
+      formatDate(data.expected_delivery) + "</strong>";
+
+    // CUSTOM ALERT
+    if (statusRaw.includes("custom")) {
       document.getElementById("customNotice").style.display = "block";
     } else {
       document.getElementById("customNotice").style.display = "none";
     }
 
-    // LOCATIONS
+    // INFO
+    document.getElementById("trackingNumber").innerText =
+      "Tracking Number: " + data.tracking;
+
     document.getElementById("fromLocation").innerText = data.sender;
     document.getElementById("toLocation").innerText = data.receiver;
 
-    // DATES
     document.getElementById("sentDate").innerText = formatDate(data.sent_date);
     document.getElementById("expectedDelivery").innerText = formatDate(data.expected_delivery);
 
     // TIMELINE
     let html = "";
-    data.events.forEach((event, index) => {
+    data.events.forEach((e,i)=>{
       html += `
-        <div class="timeline-item ${index === 0 ? 'current' : ''}">
-          <div class="timeline-date">${event.date}</div>
-          <div>
-            <strong>${event.title}</strong><br>
-            <span>${event.location}</span>
-          </div>
-        </div>
-      `;
+        <div class="timeline-item ${i===0?'current':''}">
+          <div>${e.date}</div>
+          <strong>${e.title}</strong><br>
+          <span>${e.location}</span>
+        </div>`;
     });
 
     document.querySelector(".tracking-timeline").innerHTML =
@@ -289,8 +242,8 @@ async function showTrackingResult() {
 
   } catch (err) {
     hideLoader();
+    alert("Server error");
     console.error(err);
-    alert("Server error. Try again.");
   }
 }
 </script>
