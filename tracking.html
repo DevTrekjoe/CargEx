@@ -191,6 +191,46 @@ window.smartsupp||(function(d) {
     Your shipment has been successfully delivered.
   </p>
 </div>
+
+      <!-- FULL SHIPMENT DETAILS -->
+<div style="background:#fff;border-radius:8px;padding:20px;margin-top:20px;">
+
+  <h3 style="margin-bottom:15px;color:#4D148C;">Shipment Details</h3>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;">
+
+    <div>
+      <div style="font-size:12px;color:#888;">Sender Name</div>
+      <div id="senderName" style="font-weight:600;">-</div>
+    </div>
+
+    <div>
+      <div style="font-size:12px;color:#888;">Receiver Name</div>
+      <div id="receiverName" style="font-weight:600;">-</div>
+    </div>
+
+    <div>
+      <div style="font-size:12px;color:#888;">Weight</div>
+      <div id="weight" style="font-weight:600;">-</div>
+    </div>
+
+    <div>
+      <div style="font-size:12px;color:#888;">Product</div>
+      <div id="product" style="font-weight:600;">-</div>
+    </div>
+
+    <div>
+      <div style="font-size:12px;color:#888;">Service</div>
+      <div id="service" style="font-weight:600;">-</div>
+    </div>
+
+    <div>
+      <div style="font-size:12px;color:#888;">Carrier</div>
+      <div id="carrier" style="font-weight:600;">-</div>
+    </div>
+
+  </div>
+</div>
       <!-- DETAILS -->
       <div style="background:#fff;border-radius:8px;padding:20px;margin-top:20px;">
 
@@ -438,7 +478,13 @@ if (key === "custom") {
     document.getElementById("toLocation").innerText = data.receiver;
     document.getElementById("sentDate").innerText = formatDate(data.sent_date);
     document.getElementById("expectedDelivery").innerText = formatDate(data.expected_delivery);
-
+    // FULL DETAILS (NEW)
+    document.getElementById("senderName").innerText = data.sender_name || "-";
+    document.getElementById("receiverName").innerText = data.receiver_name || "-";
+    document.getElementById("weight").innerText = data.weight ? data.weight + " KG" : "-";
+    document.getElementById("product").innerText = data.product || "-";
+    document.getElementById("service").innerText = data.service || "-";
+    document.getElementById("carrier").innerText = data.carrier || "-";
     // TIMELINE
     let html = "";
     data.events.forEach((e,i)=>{
