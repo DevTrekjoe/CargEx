@@ -135,8 +135,9 @@ async function showTrackingResult() {
   document.querySelector("#tracking-result h3").innerText =
     "Tracking Number: " + data.tracking;
 
-  document.querySelector("#tracking-result p").innerText =
-    "CargEx Express — Estimated Delivery: " + formatDate(data.expected_delivery);
+
+  document.querySelector("#tracking-result p").innerHTML =
+  "CargEx Express — Estimated Delivery: <strong>" + formatDate(data.expected_delivery) + "</strong>";
 
   document.querySelector("#tracking-result span").innerText =
     data.status;
