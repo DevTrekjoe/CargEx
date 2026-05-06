@@ -88,6 +88,13 @@
         </div>
         <div>
           <span style="background:#FF6600;color:#fff;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:700;"></span>
+          <!-- CUSTOM CLEARANCE NOTICE -->
+<div id="customNotice" style="display:none; margin-top:15px; padding:15px; background:#fff3cd; border-left:5px solid #ff9800; border-radius:6px;">
+  <strong style="color:#b26a00;">Custom Clearance Notice:</strong>
+  <p style="margin:5px 0 0; color:#7a5a00;">
+    Your shipment is currently awaiting customs clearance. Please contact customer service for further instructions to avoid delays.
+  </p>
+</div>
         </div>
       </div>
 
@@ -190,8 +197,15 @@ async function showTrackingResult() {
       "CargEx Express — Estimated Delivery: <strong>" +
       formatDate(data.expected_delivery) + "</strong>";
 
-    document.querySelector("#tracking-result span").innerText =
-      data.status;
+    const statusEl = document.querySelector("#tracking-result span");
+statusEl.innerText = data.status;
+
+// CUSTOM STATUS CHECK
+if (data.status && data.status.toLowerCase() === "custom") {
+  document.getElementById("customNotice").style.display = "block";
+} else {
+  document.getElementById("customNotice").style.display = "none";
+}
 
     // LOCATIONS
     document.getElementById("fromLocation").innerText = data.sender;
