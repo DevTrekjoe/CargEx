@@ -151,13 +151,11 @@
 <!-- FOOTER -->
 <footer class="main-footer">
   <div class="container">
-    <div class="footer-bottom">
-      <p>&copy; CargEx 1995-2026</p>
-    </div>
+    <p>&copy; CargEx 1995-2026</p>
   </div>
 </footer>
 
-<!-- SCRIPT -->
+<!-- STATUS ENGINE (FIXED & ROBUST) -->
 <script>
 const STATUS_CONFIG = {
   "shipment created": { color:"#6c757d", message:"Shipment created and awaiting processing." },
@@ -168,15 +166,41 @@ const STATUS_CONFIG = {
   "custom": { color:"#d93025", message:"Held at customs." }
 };
 
+// ---------- NORMALIZER ----------
+function normalizeStatus(str) {
+  return (str || "")
+    .toLowerCase()
+    .replace(/[_-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// ---------- DETECTOR ----------
+function detectStatusKey(status) {
+  const s = normalizeStatus(status);
+
+  if (s.includes("shipment") && s.includes("created")) return "shipment created";
+  if (s.includes("process")) return "processing";
+  if (s.includes("transit")) return "in transit";
+  if (s.includes("out") && s.includes("delivery")) return "out for delivery";
+  if (s.includes("deliver")) return "delivered";
+  if (s.includes("custom")) return "custom";
+
+  return "unknown";
+}
+
+// ---------- FORMAT DATE ----------
 function formatDate(dateStr){
   if(!dateStr) return "-";
   const d = new Date(dateStr);
   return d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
 }
 
+// ---------- LOADER ----------
 function showLoader(){document.getElementById("loader").style.display="flex";}
 function hideLoader(){document.getElementById("loader").style.display="none";}
 
+// ---------- MAIN ----------
 async function showTrackingResult(){
 
   const tracking = document.getElementById("track-input").value;
@@ -194,24 +218,11 @@ async function showTrackingResult(){
 
     document.getElementById("tracking-result").style.display="block";
 
-    // NORMALIZE STATUS (FIX FOR ALL ISSUES)
-    let statusRaw = (data.status || "")
-      .toLowerCase()
-      .replace(/\s+/g," ")
-      .trim();
-
-    let key = statusRaw;
-
-    if(key.includes("shipment") && key.includes("created")) key="shipment created";
-    else if(key.includes("process")) key="processing";
-    else if(key.includes("transit")) key="in transit";
-    else if(key.includes("out") && key.includes("delivery")) key="out for delivery";
-    else if(key.includes("deliver")) key="delivered";
-    else if(key.includes("custom")) key="custom";
-
+    // STATUS ENGINE
+    const key = detectStatusKey(data.status);
     const status = STATUS_CONFIG[key] || {
       color:"#FF6600",
-      message:data.status
+      message:data.status || "Unknown status"
     };
 
     // BADGE
@@ -219,7 +230,7 @@ async function showTrackingResult(){
     badge.innerText = data.status;
     badge.style.background = status.color;
 
-    // INFO MESSAGE
+    // INFO
     document.getElementById("trackingInfo").innerHTML =
       status.message + " — Estimated Delivery: <strong>" +
       formatDate(data.expected_delivery) + "</strong>";
