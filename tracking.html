@@ -9,138 +9,120 @@
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <!-- Top Utility Bar -->
-  <div class="utility-bar">
-    <div class="container utility-bar-inner">
-      <div class="utility-links">
-        <a href="#">CargEx Mobile</a>
-        <a href="#">Get Notifications</a>
-      </div>
-      <div class="utility-right">
-        <a href="#">English</a>
-        <a href="/login.html">Sign Up or Log In</a>
-      </div>
+
+<!-- HEADER -->
+<div class="utility-bar">
+  <div class="container utility-bar-inner">
+    <div class="utility-links">
+      <a href="#">CargEx Mobile</a>
+      <a href="#">Get Notifications</a>
+    </div>
+    <div class="utility-right">
+      <a href="#">English</a>
+      <a href="/login.html">Sign Up or Log In</a>
     </div>
   </div>
+</div>
 
-  
-
-  <div class="page-header" style="background:#0070F3">
-    <div class="container">
-      <h1>Track Your Shipment</h1>
-      <p>Enter your tracking number to get real-time status updates</p>
-    </div>
+<div class="page-header" style="background:#0070F3">
+  <div class="container">
+    <h1>Track Your Shipment</h1>
+    <p>Enter your tracking number to get real-time status updates</p>
   </div>
+</div>
 
-  <div class="page-content">
-    <div class="container">
-      <div class="tracking-box" style="box-shadow: 0 4px 16px rgba(0,0,0,0.08);">
-        <div class="tracking-form" style="display:block;">
-          <label for="track-input">TRACKING NUMBER</label>
-          <div class="tracking-input-group">
-            <input type="text" id="track-input" placeholder="Enter your CargEx tracking number">
-            <button class="btn-primary" onclick="showTrackingResult()">TRACK</button>
-          </div>
-          <p style="font-size:13px;color:#888;margin-top:10px;">You can track up to 30 packages at once. Separate multiple tracking numbers with commas.</p>
+<!-- CONTENT -->
+<div class="page-content">
+  <div class="container">
+
+    <!-- INPUT -->
+    <div class="tracking-box" style="box-shadow: 0 4px 16px rgba(0,0,0,0.08);">
+      <div class="tracking-form">
+        <label>TRACKING NUMBER</label>
+        <div class="tracking-input-group">
+          <input type="text" id="track-input" placeholder="Enter your CargEx tracking number">
+          <button class="btn-primary" onclick="showTrackingResult()">TRACK</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="tracking-result" id="tracking-result" style="display:none;">
+
+      <!-- TOP -->
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+        <div>
+          <h3 style="font-size:20px;color:#4D148C;">Tracking Number:</h3>
+          <p style="font-size:14px;color:#666;"></p>
+        </div>
+        <div>
+          <span style="background:#FF6600;color:#fff;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:700;"></span>
         </div>
       </div>
 
-      <div class="tracking-result" id="tracking-result" style="display:none;">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;">
+      <!-- DETAILS -->
+      <div style="background:#fff;border-radius:8px;padding:20px;margin-top:20px;">
+
+        <!-- FROM / TO -->
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;">
           <div>
-            <h3 style="font-size:20px;color:#4D148C;margin-bottom:4px;">Tracking Number: 7489 2084 3920 0194</h3>
-            <p style="font-size:14px;color:#666;">CargEx Express &mdash; Estimated Delivery: Tomorrow by 10:30 AM</p>
+            <div style="font-size:12px;color:#888;">FROM</div>
+            <div id="fromLocation" style="font-weight:600;">-</div>
           </div>
+
           <div style="text-align:right;">
-            <span style="display:inline-block;background:#FF6600;color:#fff;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:700;">In Transit</span>
+            <div style="font-size:12px;color:#888;">TO</div>
+            <div id="toLocation" style="font-weight:600;">-</div>
           </div>
         </div>
 
-        <div style="background:#fff;border-radius:8px;padding:20px;margin-top:20px;">
-          <div style="display:flex;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:16px;">
-            <div>
-              <div style="font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;">From</div>
-              <div id="fromLocation" style="font-size:15px;font-weight:600;">-</div>
-            </div>
-            <div style="text-align:center;">
-              <svg width="80" height="24" viewBox="0 0 80 24">
-                <line x1="0" y1="12" x2="70" y2="12" stroke="#4D148C" stroke-width="2" stroke-dasharray="4"/>
-                <polygon points="70,6 80,12 70,18" fill="#FF6600"/>
-              </svg>
-            </div>
-            <div style="text-align:right;">
-              <div style="font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;">To</div>
-              <div id="toLocation" style="font-size:15px;font-weight:600;">-</div>
-            </div>
+        <!-- NEW DATES -->
+        <div style="display:flex;justify-content:space-between;margin-top:20px;">
+          <div>
+            <div style="font-size:12px;color:#888;">Sent Date</div>
+            <div id="sentDate" style="font-weight:600;">-</div>
+          </div>
+
+          <div style="text-align:right;">
+            <div style="font-size:12px;color:#888;">Expected Delivery</div>
+            <div id="expectedDelivery" style="font-weight:600;">-</div>
           </div>
         </div>
 
-        <div class="tracking-timeline">
-          <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">Shipment Progress</h3>
-          <div class="timeline-item current">
-            <div class="timeline-date">Mar 30, 2026<br>8:42 AM</div>
-            <div class="timeline-detail">
-              <strong>In transit</strong>
-              <span>Newark, NJ — Package arrived at CargEx facility</span>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-date">Mar 30, 2026<br>3:15 AM</div>
-            <div class="timeline-detail">
-              <strong>Departed CargEx hub</strong>
-              <span>Indianapolis, IN — Package departed sort facility</span>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-date">Mar 29, 2026<br>10:22 PM</div>
-            <div class="timeline-detail">
-              <strong>Arrived at CargEx hub</strong>
-              <span>Indianapolis, IN — Package arrived at hub</span>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-date">Mar 29, 2026<br>5:47 PM</div>
-            <div class="timeline-detail">
-              <strong>Picked up</strong>
-              <span>Memphis, TN — Package picked up from sender</span>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-date">Mar 29, 2026<br>2:30 PM</div>
-            <div class="timeline-detail">
-              <strong>Shipment information sent to CargEx</strong>
-              <span>Memphis, TN — Label created</span>
-            </div>
-          </div>
-        </div>
       </div>
+
+      <!-- TIMELINE -->
+      <div class="tracking-timeline" style="margin-top:20px;">
+        <h3>Shipment Progress</h3>
+      </div>
+
     </div>
+
   </div>
+</div>
 
-  <footer class="main-footer">
-    <div class="container">
-      <div class="footer-bottom" style="border-top:none;">
-        <div class="footer-bottom-links">
-          <a href="#">Terms of Use</a>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Accessibility</a>
-        </div>
-        <p>&copy; CargEx 1995-2026. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+<!-- FOOTER -->
+<footer class="main-footer">
+  <div class="container">
+    <p>&copy; CargEx 2026</p>
+  </div>
+</footer>
 
-  <script>
-    function showTrackingResult() {
-      document.getElementById('tracking-result').style.display = 'block';
-      document.getElementById('tracking-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
-     
-    }
-  </script>
-  <script src="/app.js"></script>
-  <script>
+<!-- SCRIPT -->
+<script>
+function formatDate(dateStr) {
+  if (!dateStr) return "-";
+
+  const d = new Date(dateStr);
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  });
+}
+
 async function showTrackingResult() {
-  const tracking = document.getElementById('track-input').value;
+  const tracking = document.getElementById("track-input").value;
 
   const res = await fetch("https://xn--km-xqa.com/track.php?tracking=" + tracking);
   const data = await res.json();
@@ -150,29 +132,37 @@ async function showTrackingResult() {
     return;
   }
 
-  // Show result
-  document.getElementById('tracking-result').style.display = 'block';
+  document.getElementById("tracking-result").style.display = "block";
 
-  // Update UI dynamically
+  // TOP
   document.querySelector("#tracking-result h3").innerText =
     "Tracking Number: " + data.tracking;
 
   document.querySelector("#tracking-result p").innerText =
-    "CargEx Express — Estimated Delivery: " + data.estimated;
+    "CargEx Express — Estimated Delivery: " + formatDate(data.expected_delivery);
 
-  // Status badge
-  document.querySelector("#tracking-result span").innerText = data.status;
- // FROM & TO
-document.getElementById("fromLocation").innerText = data.sender;
-document.getElementById("toLocation").innerText = data.receiver;
-  // Timeline
-  let timelineHTML = "";
+  document.querySelector("#tracking-result span").innerText =
+    data.status;
+
+  // LOCATIONS
+  document.getElementById("fromLocation").innerText = data.sender;
+  document.getElementById("toLocation").innerText = data.receiver;
+
+  // DATES
+  document.getElementById("sentDate").innerText =
+    formatDate(data.sent_date);
+
+  document.getElementById("expectedDelivery").innerText =
+    formatDate(data.expected_delivery);
+
+  // TIMELINE
+  let html = "";
   data.events.forEach((event, index) => {
-    timelineHTML += `
+    html += `
       <div class="timeline-item ${index === 0 ? 'current' : ''}">
         <div class="timeline-date">${event.date}</div>
-        <div class="timeline-detail">
-          <strong>${event.title}</strong>
+        <div>
+          <strong>${event.title}</strong><br>
           <span>${event.location}</span>
         </div>
       </div>
@@ -180,31 +170,9 @@ document.getElementById("toLocation").innerText = data.receiver;
   });
 
   document.querySelector(".tracking-timeline").innerHTML =
-    "<h3>Shipment Progress</h3>" + timelineHTML;
+    "<h3>Shipment Progress</h3>" + html;
 }
 </script>
-
-  <script>
-const params = new URLSearchParams(window.location.search);
-const tracking = params.get("tracking");
-
-console.log("Tracking:", tracking);
-
-// 👉 You can now fetch data using this
-// fetch(API + "track.php?tracking=" + tracking)
-</script>
-  <!-- Smartsupp Live Chat script -->
-<script type="text/javascript">
-var _smartsupp = _smartsupp || {};
-_smartsupp.key = '3ca1d7cc2397fbb6b801334f2cdfad28af763ad4';
-window.smartsupp||(function(d) {
-  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
-  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
-  c.type='text/javascript';c.charset='utf-8';c.async=true;
-  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
-})(document);
-</script>
-<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
 
 </body>
 </html>
