@@ -231,37 +231,38 @@ window.smartsupp||(function(d) {
   <div class="grid">
 
     <!-- CREATE -->
-    <div class="card">
+<div class="card">
   <h2>Create Shipment</h2>
 
   <input id="email" placeholder="Customer Email">
-  <input id="from" placeholder="From">
-  <input id="to" placeholder="To">
 
-  
+  <!-- Sender -->
+  <input id="senderName" placeholder="Sender Name">
+  <input id="from" placeholder="From Location">
 
-      <!-- Sent Date -->
-<label for="sentDate" style="display:block; font-size:12px; color:#888; margin-bottom:4px;">
-  Sent Date
-</label>
-<input id="sentDate" type="date" style="
-  width:100%;
-  padding:10px;
-  border:1px solid #ddd;
-  border-radius:6px;
-  margin-bottom:15px;
-">
+  <!-- Receiver -->
+  <input id="receiverName" placeholder="Receiver Name">
+  <input id="to" placeholder="Destination">
 
-<!-- Expected Delivery -->
-<label for="expectedDelivery" style="display:block; font-size:12px; color:#888; margin-bottom:4px;">
-  Expected Delivery
-</label>
-<input id="expectedDelivery" type="date" style="
-  width:100%;
-  padding:10px;
-  border:1px solid #ddd;
-  border-radius:6px;
-">
+  <!-- Shipment Details -->
+  <input id="weight" placeholder="Weight (KG)">
+  <input id="product" placeholder="Product">
+
+  <select id="service" class="select">
+    <option value="">Select Service Type</option>
+    <option>Standard Shipping</option>
+    <option>Express Delivery</option>
+    <option>Overnight</option>
+  </select>
+
+  <input id="carrier" placeholder="Carrier (e.g. DHL, UPS, FedEx)">
+
+  <!-- Dates -->
+  <label style="font-size:12px;color:#888;">Sent Date</label>
+  <input id="sentDate" type="date">
+
+  <label style="font-size:12px;color:#888;">Expected Delivery</label>
+  <input id="expectedDelivery" type="date">
 
   <button onclick="create()">Create Shipment</button>
 </div>
@@ -362,31 +363,35 @@ async function create() {
         email: email.value,
         from: from.value,
         to: to.value,
+
+        sender_name: senderName.value,
+        receiver_name: receiverName.value,
+
+        weight: weight.value,
+        product: product.value,
+        service: service.value,
+        carrier: carrier.value,
+
         sent_date: sentDate.value,
         expected_delivery: expectedDelivery.value
       })
     });
 
     const text = await res.text();
-    console.log("RAW RESPONSE:", text);
+    console.log("RAW:", text);
 
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch (e) {
-      throw new Error("Invalid JSON from server");
-    }
+    const data = JSON.parse(text);
 
     if (data.tracking) {
       alert("✅ Tracking Created: " + data.tracking);
       loadShipments();
     } else {
-      alert("❌ Error: " + (data.error || "Unknown"));
+      alert("❌ " + (data.error || "Error"));
     }
 
   } catch (err) {
     console.error(err);
-    alert("Server error (check console)");
+    alert("Server error");
   }
 }
 // 🔄 UPDATE
