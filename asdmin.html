@@ -419,9 +419,8 @@ async function loadShipments() {
   <td>${item.location}</td>
 
   <!-- NEW -->
-  <td>${item.sentDate || "-"}</td>
-  <td>${item.expectedDelivery || "-"}</td>
-
+<td>${item.sent_date || "-"}</td>
+<td>${item.expected_delivery || "-"}</td>
   <td>
     <button class="delete-btn" onclick="deleteShipment('${item.tracking}')">
       Delete
