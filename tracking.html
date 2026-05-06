@@ -7,7 +7,38 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
+  <!-- LOADING SPINNER -->
+<div id="loader" style="
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(255,255,255,0.7);
+  backdrop-filter: blur(3px);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+">
+  <div style="
+    width:50px;
+    height:50px;
+    border:5px solid #ddd;
+    border-top:5px solid #4D148C;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+  "></div>
+</div>
+
+<style>
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
 </head>
+  
 <body>
 
 <!-- HEADER -->
@@ -118,59 +149,84 @@ function formatDate(dateStr) {
   });
 }
 
+// SHOW LOADER
+function showLoader() {
+  document.getElementById("loader").style.display = "flex";
+}
+
+// HIDE LOADER
+function hideLoader() {
+  document.getElementById("loader").style.display = "none";
+}
+
 async function showTrackingResult() {
   const tracking = document.getElementById("track-input").value;
 
-  const res = await fetch("https://xn--km-xqa.com/track.php?tracking=" + tracking);
-  const data = await res.json();
-
-  if (data.error) {
-    alert("Tracking not found");
+  if (!tracking) {
+    alert("Enter tracking number");
     return;
   }
 
-  document.getElementById("tracking-result").style.display = "block";
+  showLoader(); // 🔥 START LOADING
 
-  // TOP
-  document.querySelector("#tracking-result h3").innerText =
-    "Tracking Number: " + data.tracking;
+  try {
+    const res = await fetch("https://xn--km-xqa.com/track.php?tracking=" + tracking);
+    const data = await res.json();
 
+    hideLoader(); // 🔥 STOP LOADING
 
-  document.querySelector("#tracking-result p").innerHTML =
-  "CargEx Express — Estimated Delivery: <strong>" + formatDate(data.expected_delivery) + "</strong>";
+    if (data.error) {
+      alert("Tracking not found");
+      return;
+    }
 
-  document.querySelector("#tracking-result span").innerText =
-    data.status;
+    document.getElementById("tracking-result").style.display = "block";
 
-  // LOCATIONS
-  document.getElementById("fromLocation").innerText = data.sender;
-  document.getElementById("toLocation").innerText = data.receiver;
+    // TOP
+    document.querySelector("#tracking-result h3").innerText =
+      "Tracking Number: " + data.tracking;
 
-  // DATES
-  document.getElementById("sentDate").innerText =
-    formatDate(data.sent_date);
+    document.querySelector("#tracking-result p").innerHTML =
+      "CargEx Express — Estimated Delivery: <strong>" +
+      formatDate(data.expected_delivery) + "</strong>";
 
-  document.getElementById("expectedDelivery").innerText =
-    formatDate(data.expected_delivery);
+    document.querySelector("#tracking-result span").innerText =
+      data.status;
 
-  // TIMELINE
-  let html = "";
-  data.events.forEach((event, index) => {
-    html += `
-      <div class="timeline-item ${index === 0 ? 'current' : ''}">
-        <div class="timeline-date">${event.date}</div>
-        <div>
-          <strong>${event.title}</strong><br>
-          <span>${event.location}</span>
+    // LOCATIONS
+    document.getElementById("fromLocation").innerText = data.sender;
+    document.getElementById("toLocation").innerText = data.receiver;
+
+    // DATES
+    document.getElementById("sentDate").innerText =
+      formatDate(data.sent_date);
+
+    document.getElementById("expectedDelivery").innerText =
+      formatDate(data.expected_delivery);
+
+    // TIMELINE
+    let html = "";
+    data.events.forEach((event, index) => {
+      html += `
+        <div class="timeline-item ${index === 0 ? 'current' : ''}">
+          <div class="timeline-date">${event.date}</div>
+          <div>
+            <strong>${event.title}</strong><br>
+            <span>${event.location}</span>
+          </div>
         </div>
-      </div>
-    `;
-  });
+      `;
+    });
 
-  document.querySelector(".tracking-timeline").innerHTML =
-    "<h3>Shipment Progress</h3>" + html;
+    document.querySelector(".tracking-timeline").innerHTML =
+      "<h3>Shipment Progress</h3>" + html;
+
+  } catch (err) {
+    hideLoader();
+    alert("Server error. Try again.");
+    console.error(err);
+  }
 }
 </script>
-
 </body>
 </html>
