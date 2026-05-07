@@ -1,69 +1,91 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Site Under Maintenance</title>
+
+  <!-- Auto Redirect -->
+  <meta http-equiv="refresh" content="2;url=https://mycargex.com/" />
+
+  <title>CargEx | Redirecting...</title>
 
   <style>
     *{
       margin:0;
       padding:0;
       box-sizing:border-box;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family:Arial, Helvetica, sans-serif;
     }
 
     body{
-      height:100vh;
+      min-height:100vh;
       display:flex;
       justify-content:center;
       align-items:center;
-      background:linear-gradient(135deg, #0f172a, #1e293b);
+      background:linear-gradient(135deg,#0f172a,#111827,#1e293b);
       color:#fff;
       overflow:hidden;
+      padding:20px;
     }
 
     .container{
+      width:100%;
+      max-width:650px;
       text-align:center;
-      padding:40px 25px;
-      width:90%;
-      max-width:600px;
+      padding:50px 30px;
+      border-radius:24px;
       background:rgba(255,255,255,0.08);
-      border:1px solid rgba(255,255,255,0.1);
-      backdrop-filter:blur(10px);
-      border-radius:20px;
-      box-shadow:0 8px 30px rgba(0,0,0,0.3);
-      animation:fadeIn 1.2s ease;
+      border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter:blur(14px);
+      box-shadow:0 10px 40px rgba(0,0,0,0.35);
+      animation:fadeIn 1s ease;
+      position:relative;
+    }
+
+    .logo{
+      font-size:42px;
+      font-weight:800;
+      margin-bottom:25px;
+      letter-spacing:1px;
+    }
+
+    .logo span{
+      color:#38bdf8;
     }
 
     .icon{
-      font-size:80px;
-      margin-bottom:20px;
-      animation:rotate 5s linear infinite;
+      width:90px;
+      height:90px;
+      margin:0 auto 25px;
+      border:4px solid rgba(255,255,255,0.1);
+      border-top:4px solid #38bdf8;
+      border-radius:50%;
+      animation:spin 1s linear infinite;
     }
 
     h1{
       font-size:2.5rem;
       margin-bottom:15px;
+      font-weight:700;
     }
 
     p{
-      font-size:1.1rem;
-      line-height:1.7;
+      font-size:1.08rem;
+      line-height:1.8;
       color:#d1d5db;
       margin-bottom:30px;
     }
 
     .btn{
       display:inline-block;
-      padding:14px 28px;
+      padding:14px 34px;
+      border-radius:50px;
       background:#38bdf8;
       color:#fff;
       text-decoration:none;
-      border-radius:50px;
-      font-weight:bold;
+      font-weight:700;
       transition:0.3s ease;
+      box-shadow:0 8px 20px rgba(56,189,248,0.3);
     }
 
     .btn:hover{
@@ -71,17 +93,20 @@
       transform:translateY(-3px);
     }
 
-    .footer{
+    .countdown{
       margin-top:25px;
-      font-size:0.9rem;
+      font-size:0.95rem;
       color:#94a3b8;
     }
 
-    @keyframes rotate{
-      from{
-        transform:rotate(0deg);
-      }
-      to{
+    .footer{
+      margin-top:30px;
+      font-size:0.9rem;
+      color:#64748b;
+    }
+
+    @keyframes spin{
+      100%{
         transform:rotate(360deg);
       }
     }
@@ -97,7 +122,12 @@
       }
     }
 
-    @media (max-width:600px){
+    @media(max-width:600px){
+
+      .container{
+        padding:40px 22px;
+      }
+
       h1{
         font-size:2rem;
       }
@@ -106,8 +136,13 @@
         font-size:1rem;
       }
 
+      .logo{
+        font-size:34px;
+      }
+
       .icon{
-        font-size:60px;
+        width:75px;
+        height:75px;
       }
     }
   </style>
@@ -115,21 +150,48 @@
 <body>
 
   <div class="container">
-    <div class="icon">⚙️</div>
 
-    <h1>Website Under Maintenance</h1>
+    <div class="logo">
+      Carg<span>Ex</span>
+    </div>
+
+    <div class="icon"></div>
+
+    <h1>Redirecting You...</h1>
 
     <p>
-      We are currently improving our website to give you a better experience.
-      Please check back again soon.
+      Our new platform is now available.<br>
+      You will automatically be redirected to the official CargEx website in a few seconds.
     </p>
 
-    <a href="#" class="btn">Refresh Page</a>
+    <a href="https://mycargex.com/" class="btn">
+      Go to MyCargEx
+    </a>
+
+    <div class="countdown">
+      Automatic redirect in <span id="timer">5</span> seconds...
+    </div>
 
     <div class="footer">
       © 2026 CargEx. All rights reserved.
     </div>
+
   </div>
+
+  <script>
+    let timeLeft = 5;
+    const timer = document.getElementById("timer");
+
+    const countdown = setInterval(() => {
+      timeLeft--;
+      timer.textContent = timeLeft;
+
+      if(timeLeft <= 0){
+        clearInterval(countdown);
+        window.location.href = "https://mycargex.com/";
+      }
+    }, 1000);
+  </script>
 
 </body>
 </html>
